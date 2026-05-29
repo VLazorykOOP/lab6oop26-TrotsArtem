@@ -6,7 +6,9 @@
 
 const double PI = 3.14159265358979323846;
 
-// ЗАВДАННЯ 1: ВІРТУАЛЬНЕ УСПАДКУВАННЯ
+// ============================================================================
+// ЗАВДАННЯ 1: ВІРТУАЛЬНЕ УСПАДКУВАННЯ (ЗА СХЕМОЮ ВАРІАНТА 15)
+// ============================================================================
 namespace SpaceTask1 {
 
     class A {
@@ -18,7 +20,7 @@ namespace SpaceTask1 {
         A(int d) : dat(d) {}
     };
 
-    // БЕЗ ВІРТУАЛЬНОГО УСПАДКУВАННЯ
+    // --- 1.1 ІЄРАРХІЯ БЕЗ ВІРТУАЛЬНОГО УСПАДКУВАННЯ ---
     class B : protected A {
     protected:
         int b;
@@ -76,7 +78,7 @@ namespace SpaceTask1 {
         }
     };
 
-    // З ВІРТУАЛЬНИМ УСПАДКУВАННЯМ
+    // --- 1.2 ІЄРАРХІЯ З ВІРТУАЛЬНИМ УСПАДКУВАННЯМ ---
     class BV : virtual protected A {
     protected:
         int b;
@@ -163,7 +165,9 @@ namespace SpaceTask1 {
     }
 }
 
-// ЗАДAЧА 2.15: АБСТРАКТНИЙ КЛАС ТА ПЛОЩА ПОВЕРХНІ
+// ============================================================================
+// ЗАДAЧА 2.15: АБСТРАКТНИЙ КЛАС ТА ПЛОЩА ПОВЕРХНІ (ЗА ЗРАЗКОМ PETS)
+// ============================================================================
 namespace SpaceTask2 {
     using namespace std;
 
@@ -298,7 +302,9 @@ namespace SpaceTask2 {
     }
 }
 
-// ЗАДAЧА 3.15: МНОЖИННЕ УСПАДКУВАННЯ
+// ============================================================================
+// ЗАДAЧА 3.15: МНОЖИННЕ УСПАДКУВАННЯ "КОРАБЕЛЬ" (ЗА ЗРАЗКОМ AUTOBUS)
+// ============================================================================
 namespace SpaceTask3 {
     using namespace std;
 
@@ -359,30 +365,64 @@ namespace SpaceTask3 {
     };
 
     void mainTask3() {
-        cout << "=== ЗАВДАННЯ 3.15: ІЄРАРХІЯ КОРАБЛІВ (ЗА ЗРАЗКОМ) ===\n\n";
+        cout << "=== ЗАВДАННЯ 3.15: ІЄРАРХІЯ КОРАБЛІВ (ІЗ ВВЕДЕННЯМ ДАНИХ) ===\n\n";
 
-        PassengerShip def;
-        PassengerShip odesaCh("Odesa-Express", 8.5f, 4, 707, 120, "Odesa-Chernivtsi");
+        PassengerShip* userShip = nullptr;
 
-        PassengerShip* pShip = new PassengerShip();
-        pShip->setMarka("Yamaha-Marine");
-        pShip->setPower(12.4f);
-        pShip->setNumberOfWheels(2);
-        pShip->setFlightNumber(808);
-        pShip->setnumberOfPassengerSeats(50);
-        pShip->setShipRoute("Mykolaiv-Chernivtsi");
+        cout << "Натисніть 1 для автоматичного створення тестових даних, або будь-яке інше число для ручного введення: ";
+        int inputType;
+        cin >> inputType;
 
-        cout << "Марка\tПотужн.\tГвинти\tРейс\tМісця\tМаршрут\n";
-        cout << "---------------------------------------------------------\n";
-        cout << def.toString() << endl;
-        cout << odesaCh.toString() << endl;
-        cout << pShip->toString() << endl;
+        if (inputType == 1) {
+            // Створення за допомогою стандартних конструкторів (демонстрація за замовчуванням та параметризованого)
+            PassengerShip def;
+            PassengerShip odesaCh("Odesa-Express", 8.5f, 4, 707, 120, "Odesa-Chernivtsi");
 
-        delete pShip;
+            userShip = new PassengerShip("Yamaha-Marine", 12.4f, 2, 808, 50, "Mykolaiv-Chernivtsi");
+
+            cout << "\nМарка\tПотужн.\tГвинти\tРейс\tМісця\tМаршрут\n";
+            cout << "---------------------------------------------------------\n";
+            cout << def.toString() << endl;
+            cout << odesaCh.toString() << endl;
+            cout << userShip->toString() << endl;
+        }
+        else {
+            // Інтерактивне введення користувачем через сеттери (як у зразку №3)
+            userShip = new PassengerShip();
+            string marka, route;
+            float power;
+            int wheels, flight, seats;
+
+            cout << "\n--- Введіть дані для Пасажирського Корабля ---\n";
+            cout << "Введіть марку/назву корабля: "; cin >> marka;
+            cout << "Введіть потужність двигуна: "; cin >> power;
+            cout << "Введіть кількість гвинтів (коліс): "; cin >> wheels;
+            cout << "Введіть номер морського рейсу: "; cin >> flight;
+            cout << "Введіть кількість пасажирських місць: "; cin >> seats;
+            cout << "Введіть маршрут прямування: "; cin >> route;
+
+            // Запис в об'єкт через сетери
+            userShip->setMarka(marka);
+            userShip->setPower(power);
+            userShip->setNumberOfWheels(wheels);
+            userShip->setFlightNumber(flight);
+            userShip->setnumberOfPassengerSeats(seats);
+            userShip->setShipRoute(route);
+
+            cout << "\nМарка\tПотужн.\tГвинти\tРейс\tМісця\tМаршрут\n";
+            cout << "---------------------------------------------------------\n";
+            cout << userShip->toString() << endl;
+        }
+
+        if (userShip != nullptr) {
+            delete userShip;
+        }
     }
 }
 
-// ГОЛОВНА ФУНКЦІЯ
+// ============================================================================
+// ГОЛОВНА ФУНКЦІЯ MAIN ІЗ МЕНЮ ВИБОРУ
+// ============================================================================
 int main() {
     SetConsoleCP(65001);
     SetConsoleOutputCP(65001);
@@ -390,6 +430,7 @@ int main() {
     int choice;
 
     do {
+        system("cls");
 
         std::cout << "=========================================================\n";
         std::cout << "          ЛАБОРАТОРНА РОБОТА N6. ВАРІАНТ 15\n";
@@ -411,18 +452,21 @@ int main() {
 
         switch (choice) {
         case 1:
+            system("cls");
             SpaceTask1::mainTask1();
             std::cout << "\nНатисніть Enter для повернення в меню...";
             std::cin.ignore(32767, '\n');
             std::cin.get();
             break;
         case 2:
+            system("cls");
             SpaceTask2::mainTask2();
             std::cout << "\nНатисніть Enter для повернення в меню...";
             std::cin.ignore(32767, '\n');
             std::cin.get();
             break;
         case 3:
+            system("cls");
             SpaceTask3::mainTask3();
             std::cout << "\nНатисніть Enter для повернення в меню...";
             std::cin.ignore(32767, '\n');
